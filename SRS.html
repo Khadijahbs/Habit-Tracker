@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habit Tracker - SRS</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      background: white;
+    }
+    h1, h2, h3 {
+      color: #4361ee;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+    h2 {
+      margin-top: 28px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+    h3 {
+      margin-top: 22px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: 600;
+    }
+    ul, ol {
+      margin: 10px 0 16px 20px;
+    }
+    li {
+      margin-bottom: 6px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .signature {
+      margin-top: 40px;
+      font-style: italic;
+    }
+    @media print {
+      body {
+        padding: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Software Requirements Specification (SRS)</h1>
+    <p><strong>Habit Tracker Web Application</strong><br>
+    Version 1.0<br>
+    Date: January 3, 2026</p>
+  </div>
+
+  <h2>1. Introduction</h2>
+
+  <h3>1.1 Purpose of the System</h3>
+  <p>The <strong>Habit Tracker</strong> is a web-based application designed to help individuals build, monitor, and maintain positive daily habits. By providing intuitive tools for habit creation, completion tracking, progress visualization, and streak monitoring, the system empowers users to improve personal productivity, health, mindfulness, and overall well-being through consistent behavioral reinforcement.</p>
+  <p>This document outlines the functional and non-functional requirements, system scope, and technical context to guide development, testing, and future enhancements.</p>
+
+  <h3>1.2 Project Scope</h3>
+  <p><strong>In Scope</strong></p>
+  <ul>
+    <li>Web-based habit creation with customizable categories (e.g., Health, Fitness, Learning).</li>
+    <li>Daily habit completion tracking with persistent storage.</li>
+    <li>Real-time calculation and display of current streaks (consecutive completion days).</li>
+    <li>Weekly calendar view showing completed, missed, and current-day statuses.</li>
+    <li>Overall progress metrics (completion rate, total habits).</li>
+    <li>Responsive user interface accessible on desktop and mobile devices.</li>
+    <li>Client-side data persistence using browser <code>localStorage</code>.</li>
+    <li>Toast notifications for user feedback.</li>
+  </ul>
+
+  <p><strong>Out of Scope</strong></p>
+  <ul>
+    <li>User authentication or multi-user support.</li>
+    <li>Cloud synchronization or backup.</li>
+    <li>Habit reminders or push notifications.</li>
+    <li>Analytics beyond weekly progress (e.g., monthly/yearly trends).</li>
+    <li>Social sharing or community features.</li>
+    <li>Integration with third-party calendars or health apps.</li>
+  </ul>
+
+  <h2>2. Overall System Description</h2>
+
+  <h3>2.1 Intended Users</h3>
+  <ul>
+    <li><strong>Primary Users</strong>: Individuals seeking to develop or maintain daily habits (e.g., students, professionals, fitness enthusiasts, mindfulness practitioners).</li>
+    <li><strong>Technical Profile</strong>: Non-technical end users with basic web browser proficiency. No installation or account creation required.</li>
+  </ul>
+
+  <h3>2.2 Operating Environment</h3>
+  <ul>
+    <li><strong>Client-Side</strong>: Modern web browsers (Chrome, Firefox, Safari, Edge – latest two versions). Responsive design supporting mobile (≥320px width), tablet, and desktop viewports.</li>
+    <li><strong>Internet connection</strong> required only for initial page load (CDN-hosted assets); app functions offline thereafter.</li>
+    <li><strong>Server-Side</strong>: None. The application is fully client-side with no backend server.</li>
+    <li><strong>Data Storage</strong>: Browser <code>localStorage</code> (persistent but limited to ~5–10 MB per origin).</li>
+  </ul>
+
+  <h3>2.3 General System Functionality</h3>
+  <p>The Habit Tracker enables users to:</p>
+  <ol>
+    <li><strong>Create</strong> new habits by providing a name and selecting a category.</li>
+    <li><strong>Mark habits as completed</strong> each day with a single click.</li>
+    <li><strong>View all active habits</strong> in a scrollable list with individual streak counts.</li>
+    <li><strong>Monitor weekly progress</strong> via a color-coded calendar (green = completed, red = missed, outlined = today).</li>
+    <li><strong>Track overall statistics</strong>, including total habits, current max streak, and daily completion rate.</li>
+    <li><strong>Delete habits</strong> they no longer wish to track.</li>
+    <li><strong>Receive instant feedback</strong> via toast notifications for key actions.</li>
+  </ol>
+  <p>All data is saved automatically in the browser and persists across sessions until cleared by the user or browser.</p>
+
+  <h2>3. Functional Requirements</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Requirement</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>FR-01</td><td>Habit Creation</td><td>The system shall allow users to create a new habit by entering a name and selecting a category from a predefined list.</td></tr>
+      <tr><td>FR-02</td><td>Habit Completion</td><td>The system shall enable users to mark a habit as completed for the current day. Duplicate completions on the same day shall be prevented.</td></tr>
+      <tr><td>FR-03</td><td>Habit Deletion</td><td>The system shall allow users to delete a habit permanently after confirmation.</td></tr>
+      <tr><td>FR-04</td><td>Streak Calculation</td><td>The system shall calculate and display the current consecutive completion streak (in days) for each habit, ending on the current day.</td></tr>
+      <tr><td>FR-05</td><td>Daily Completion Rate</td><td>The system shall compute and display the percentage of habits completed today out of total active habits.</td></tr>
+      <tr><td>FR-06</td><td>Weekly Calendar View</td><td>The system shall display a 7-day calendar (Monday–Sunday) showing: <br>– Completed days (green)<br>– Missed past days (red)<br>– Current day (outlined)</td></tr>
+      <tr><td>FR-07</td><td>Data Persistence</td><td>All habit data (name, category, completion dates) shall be saved in browser <code>localStorage</code> and restored on page reload.</td></tr>
+      <tr><td>FR-08</td><td>User Feedback</td><td>The system shall display contextual toast notifications for successful actions or errors.</td></tr>
+      <tr><td>FR-09</td><td>Responsive Layout</td><td>The UI shall adapt to mobile, tablet, and desktop screen sizes.</td></tr>
+      <tr><td>FR-10</td><td>Habit Count Display</td><td>The system shall show the total number of active habits (e.g., “3 habits”).</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Non-Functional Requirements</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Requirement</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>NFR-01</td><td>Performance</td><td>UI shall render within &lt;500ms on devices with ≥2GB RAM. Actions shall feel instantaneous.</td></tr>
+      <tr><td>NFR-02</td><td>Usability</td><td>Interface shall be intuitive for first-time users. WCAG 2.1 AA contrast ratios maintained.</td></tr>
+      <tr><td>NFR-03</td><td>Reliability</td><td>Data shall not be lost during normal browser navigation or refresh.</td></tr>
+      <tr><td>NFR-04</td><td>Security</td><td>All data remains on the user’s device. No external data transmission beyond CDN assets.</td></tr>
+      <tr><td>NFR-05</td><td>Compatibility</td><td>Shall function on latest Chrome, Firefox, Safari, and Edge.</td></tr>
+      <tr><td>NFR-06</td><td>Maintainability</td><td>Code shall be modular, commented, and use CSS variables for theming.</td></tr>
+      <tr><td>NFR-07</td><td>Accessibility</td><td>Semantic HTML, keyboard navigability, and non-color-dependent status indicators.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Assumptions and Dependencies</h2>
+  <ul>
+    <li>Users understand the concept of “habits” and daily tracking.</li>
+    <li>The device clock is set correctly; streaks depend on accurate system date.</li>
+    <li><code>localStorage</code> is enabled in the user’s browser.</li>
+    <li>External dependency: Font Awesome 6.4.0 (loaded via CDN).</li>
+  </ul>
+
+  <div class="signature">
+    <p><em>Prepared by: Khadija Bello Shehy / Front-End Developer<br>
+    Date: January 3, 2026</em></p>
+  </div>
+</body>
+</html>
